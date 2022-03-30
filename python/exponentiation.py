@@ -19,6 +19,6 @@ def power2(a,n):
         return answer * answer
     else:
         print('o', answer)
-        return answer  * answer * a
+        return answer * answer * a
 
 print(power2(2,4))

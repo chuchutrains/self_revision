@@ -17,9 +17,9 @@
 
 def vs(player1, player2):
     result = []
-    rules = {
+    winRules = {
         "scissors": ["paper", "lizard"],
-        "paperWin": ["rock", "spock"],
+        "paper": ["rock", "spock"],
         "rock": ["lizard", "scissors"],
         "lizard": ["spock", "paper"],
         "spock": ["scissors", "rock"]
@@ -27,8 +27,8 @@ def vs(player1, player2):
 
     for i in range (len(player1)):
         if player1[i] == player2[i]: result.append("both players draw")
-        if player2[i] in rules.get(player1[i]): result.append("player1 wins")
-        if player1[i] in rules.get(player2[i]): result.append("player2 wins")
+        if player2[i] in winRules.get(player1[i]): result.append("player1 wins")
+        if player1[i] in winRules.get(player2[i]): result.append("player2 wins")
     return result
 
 player1 = ["scissors", "paper", "rock", "lizard", "spock"]
