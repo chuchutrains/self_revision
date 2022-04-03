@@ -44,8 +44,7 @@ class LinkList:
 
     def appendFront(self, value):
         if self.head == None:
-            self.head = Node(value)
-            self.size += 1
+            self.append(value)
             return
         node = Node(value)
         node.next = self.head
@@ -73,15 +72,43 @@ class LinkList:
             pos += 1
         return -1
 
-    def insertAfter(self, value):
-        pass
+    def insertAfter(self, findValue, insertValue):
+        pos = self.find(findValue)
+        if self.head==None or pos==-1:
+            self.append(insertValue)
+            return
+        node = self.head
+        for i in range(pos):
+            node = node.next
+        nodeAfter = node.next
+        nodeInsert = Node(insertValue)
+        node.next = nodeInsert
+        nodeInsert.prev = node
+        nodeInsert.next = nodeAfter
     
     def deleteNode(self, value):
-        pass
+        pos = self.find(value)
+        if self.head==None or pos==-1:
+            return
+        if pos==0 and self.size==1:
+            self.pop()
+            return
+        node = self.head
+        for i in range(pos):
+            node = node.next
+        nodePrev = node.prev
+        nodeNext = node.next
+        if nodePrev and nodeNext==None:
+            self.pop()
+        elif nodePrev==None and nodeNext:
+            self.popFront()
+        else:
+            nodePrev.next = nodeNext
+            nodeNext.prev = nodePrev
 
 linkList = LinkList()
-myChar = 'a'
 # Test append.
+myChar = 'a'
 for i in range(0, 5, 1):
     linkList.append(chr(ord(myChar) + i))
 linkList.printLinkList("append")
@@ -100,3 +127,12 @@ print(linkList.linkListSize())
 # Test find.
 print("=== test find ===")
 print(linkList.find('c'))
+# Test insertAfter.
+linkList.insertAfter('c', 'Z')
+linkList.printLinkList("insertAfter")
+# Test deleteNode.
+# linkList.deleteNode('z')
+linkList.deleteNode('Z')
+# linkList.deleteNode('a')
+# linkList.deleteNode('d')
+linkList.printLinkList("deleteNode")
