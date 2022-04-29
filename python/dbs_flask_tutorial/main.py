@@ -1,3 +1,6 @@
+# Youtube tutorial: https://www.youtube.com/watch?v=GMppyAPbLYk
+# 1. Use python (v3.9.12) to run, py (v3.10.4) not working.
+# 2. Run server "python main.py", run CRUD operations "python test.py"
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
