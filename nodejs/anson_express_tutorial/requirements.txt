@@ -1,0 +1,18 @@
+npm init -y
+npm install express
+node .\app.js // To run.
+npm install --save-dev nodemon // For localhost use only! Auto refresh when update the server.
+// Go to package.json and edit "scripts". To run, npm start.
+npm i cookie-parser
+npm i express-session
+
+npm i mysql2 // Install "MySQL Connector/ODBC".
+mysql -u root -p // Password: root.
+SHOW DATABASE;
+CREATE DATABASE SampleApp; // Schema.
+USE SampleApp;
+SHOW TABLES;
+CREATE TABLE USERS (username VARCHAR(255), password VARCHAR(255));
+DESCRIBE USERS;
+
+npm i express-validator
