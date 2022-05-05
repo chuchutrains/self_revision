@@ -11,6 +11,7 @@ router.use((req, res, next) => {
 });
 // All routes in here are starting with /users.
 router.post('/register', users.createUser);
+router.post('/login', users.readUser);
 
 // Export variable.
 module.exports = router;

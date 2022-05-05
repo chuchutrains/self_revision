@@ -6,6 +6,7 @@ const express = require('express');
 const session = require('express-session');
 // Import files from other folders.
 const usersRoutes = require('./routes/users');
+const bankAccRoutes = require('./routes/bank_acc');
 
 const app = express();
 const PORT = 5000;
@@ -18,7 +19,9 @@ app.use((req, res, next) => {
     next();
 });
 // Routes.
+app.get('/home', (req, res) => res.send('dbs revision app home page.'));
 app.use('/users', usersRoutes);
+app.use('/bank_acc', bankAccRoutes);
 app.listen(PORT, () => {
     console.log(`Server is running on Port: http://localhost.${PORT}`);
 });
