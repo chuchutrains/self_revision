@@ -5,6 +5,8 @@ npm i cookie-parser
 npm i express-session
 npm i express-validator
 npm i --save bcrypt
+npm install jsonwebtoken
+npm install dotenv
 
 node .\app.js // To run.
 npm install --save-dev nodemon // For localhost use only! Auto refresh when update the server.

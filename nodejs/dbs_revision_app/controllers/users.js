@@ -1,7 +1,9 @@
 // Import libraries.
 const {check, validationResult} = require('express-validator');
 const {v4: uuidv4} = require('uuid');
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require("dotenv").config();
 // Import file from other folder.
 const db = require('../database_config');
 
@@ -80,26 +82,40 @@ const readUser = [[
     // no check() validation error.
     const {user_id, pin} = req.body;
     const loginErrMsg = 'Your User ID or PIN is incorrect. Please try again.';
-    var user = await db.promise().query(`
+    var userResult = await db.promise().query(`
         SELECT * FROM USERS
         WHERE user_id = '${user_id}'
     `);
-    user = user[0];
+    userResult = userResult[0];
     // User not found.
-    if (user.length === 0) {
+    if (userResult.length === 0) {
         return res.status(403).send(loginErrMsg); // 403 Forbidden.
     }
-    const hashedPin = user[0]['pin'];
+    const hashedPin = userResult[0]['pin'];
     const validPassword = await bcrypt.compare(pin, hashedPin);
     // Wrong password.
     if (!validPassword) {
         return res.status(403).send(loginErrMsg); // 403 Forbidden.
     }
     // Login successfully.
+    // Create token.
+    const token = jwt.sign(
+        {username: user_id, pin},
+        process.env.TOKEN_KEY, // Get constant var from .env file.
+        {expiresIn: "2h"}
+    );
+    // Save user token.
+    var user = {
+        'uuid': userResult[0]['uuid'],
+        'user_id': user_id,
+        'phone_number': userResult[0]['uuid'],
+        'email': userResult[0]['email'],
+        'token': token
+    };
+    res.status(200).send(user); // 200 OK.
+    // res.redirect('/bank_acc/welcome');
+    
     // @TODO: Implement session and cookies?
-    const uuid = user[0]['uuid'];
-    console.log(uuid);
-    return res.redirect(`/bank_acc/${uuid}`);
 }];
 
 // Export functions.

@@ -10,7 +10,7 @@ router.use((req, res, next) => {
     next();
 });
 // All routes in here are starting with /bank_acc.
-router.get('/:uuid', bank_accs.readBankAcc);
+router.get('/welcome', bank_accs.readBankAcc);
 
 // Export variable.
 module.exports = router;
