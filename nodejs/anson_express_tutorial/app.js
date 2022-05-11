@@ -1,5 +1,3 @@
-// Youtube tutorial: https://www.youtube.com/watch?v=T2KjBiwYyBI&list=PL_cUvD4qzbkxZZyyuXa1xkWFhRB_NoQwl&index=1.
-
 const express = require('express');
 // const cookieParser = require('cookie-parser');
 const session = require('express-session');

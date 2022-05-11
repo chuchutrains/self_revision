@@ -1,6 +1,3 @@
-// DBS Youtube tutorial: https://www.youtube.com/watch?v=l8WPWK9mS5M.
-// Anson Youtube tutorial: https://www.youtube.com/watch?v=T2KjBiwYyBI&list=PL_cUvD4qzbkxZZyyuXa1xkWFhRB_NoQwl&index=1.
-
 // Import libraries.
 const express = require('express');
 const session = require('express-session');

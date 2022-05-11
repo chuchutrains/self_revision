@@ -1,18 +1,24 @@
+# QUICK START
+Youtube tutorial: https://www.youtube.com/watch?v=T2KjBiwYyBI&list=PL_cUvD4qzbkxZZyyuXa1xkWFhRB_NoQwl&index=1.
+1. Install the package modules with "npm install".
+2. To run, open up a terminal and run "npm start".
+3. Open up a browser and go to http://localhost:3000.
+4. Use Postman app to execute the CRUD operation.
+
+# INSTALLATION
 npm init -y
-npm install express
-node .\app.js // To run.
-npm install --save-dev nodemon // For localhost use only! Auto refresh when update the server.
-// Go to package.json and edit "scripts". To run, npm start.
-npm i cookie-parser
-npm i express-session
+npm install express cookie-parser express-session mysql2 express-validator
+npm i --save-dev nodemon
+    1. Go to package.json and edit "scripts", add "start": "nodemon app.js".
+    2. To run, open up a terminal and run "npm start".
 
-npm i mysql2 // Install "MySQL Connector/ODBC".
-mysql -u root -p // Password: root.
-SHOW DATABASE;
-CREATE DATABASE SampleApp; // Schema.
-USE SampleApp;
-SHOW TABLES;
-CREATE TABLE USERS (username VARCHAR(255), password VARCHAR(255));
-DESCRIBE USERS;
-
-npm i express-validator
+# SQL
+1. Install "MySQL Connector/ODBC".
+2. mysql -u root -p
+3. SQL queries:
+    SHOW DATABASE;
+    CREATE DATABASE SampleApp; # Schema.
+    USE SampleApp;
+    SHOW TABLES;
+    CREATE TABLE USERS (username VARCHAR(255), password VARCHAR(255));
+    DESCRIBE USERS;
