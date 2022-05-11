@@ -1,0 +1,11 @@
+# QUICK START
+Youtube tutorial: https://www.youtube.com/watch?v=l8WPWK9mS5M.
+1. To run, open up the terminal and run "npm start".
+2. Open up a browser and go to http://localhost:5000.
+3. Use Postman app to do CRUD operation.
+
+# INSTALLATION
+npm init -y 
+npm install --save express
+npm install --save-dev nodemon
+npm install uuid
