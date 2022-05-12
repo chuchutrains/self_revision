@@ -1,4 +1,12 @@
-# pip install -r requirement.txt
+# QUICK START
+# Youtube tutorial: https://www.youtube.com/watch?v=GMppyAPbLYk
+# 1. Ctrl+Shift+P to open up Command Palette, search for "Python: Select Interpreter".
+# 2. Use Python 3.9.12 to run, Python 3.10.4 not working.
+# 3. To run, open up a terminal and run "python main.py".
+# 4. To execute CRUD operations run "python test.py".
+
+# INSTALLATION
+# 1. Install the package modules with "pip install -r requirements.txt".
 aniso8601>=8.0.0
 click>=7.1.2
 Flask>=1.1.2
