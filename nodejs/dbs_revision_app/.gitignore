@@ -1,2 +1,7 @@
 # Install the package modules with "npm install".
 node_modules/
+
+# Secrets / Credentials / Sensitive information.
+# 1. Create a .env file at root folder.
+# 2. Insert "TOKEN_KEY = secret".
+.env

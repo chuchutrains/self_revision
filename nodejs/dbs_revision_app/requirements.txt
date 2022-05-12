@@ -2,9 +2,10 @@
 DBS Youtube tutorial: https://www.youtube.com/watch?v=l8WPWK9mS5M.
 Anson Youtube tutorial: https://www.youtube.com/watch?v=T2KjBiwYyBI&list=PL_cUvD4qzbkxZZyyuXa1xkWFhRB_NoQwl&index=1.
 1. Install the package modules with "npm install".
-2. To run, open up a terminal and run "npm start".
-3. Open up a browser and go to http://localhost:3000.
-4. Use Postman app to execute the CRUD operation.
+2. Create a .env file at root folder, insert "TOKEN_KEY = secret".
+3. To run, open up a terminal and run "npm start".
+4. Open up a browser and go to http://localhost:3000.
+5. Use Postman app to execute the CRUD operation.
 
 # INSTALLATION
 npm init -y
