@@ -1,0 +1,77 @@
+<!-- !+Tab for html template. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+
+    <!-- Chart.js script from https://cdnjs.com/libraries/Chart.js. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type = "text/javascript">
+        // Random color datasets: https://stackoverflow.com/questions/47638561/random-color-loop-using-chartjs-and-loops.
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF'.split('');
+            var color = '#';
+            for (var i=0; i<6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            // 50% opacity: https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4.
+            return color+'80';
+        }
+        
+        var randomColorDatasets = [];
+        for(var i=0; i<'{{ array_size }}'; i++) {
+            randomColorDatasets[i] = {
+                label: "Data points",
+                data: '{{ values[0] | safe }}',
+                backgroundColor: getRandomColor(),
+                borderColor: "rgb(255, 255, 255)",
+                borderWidth: 1,
+            };
+        }
+    </script>
+</head>
+<body>
+    <h1>Hello {{ username }}, you are logged in.</h1>
+    <a href="{{ url_for('logout') }}">Press here to logout</a><br>
+
+    <a href="{{ url_for('add_expense') }}">Add Expense</a>
+    
+    {% for expense in expenses %}
+        <p>
+            {{ expense.name }}
+            {{ expense.amount }}
+            {{ expense.updated_at }}
+            <a href="{{ url_for('edit_expense', id=expense.id) }}">Edit</a>
+            <a href="{{ url_for('delete_expense', id=expense.id) }}">Delete</a>
+        </p>
+    {% endfor %}
+
+    <!-- Chart.js tutorial: https://www.youtube.com/watch?v=E2hytuQvLlE. -->
+    <canvas id="barChart" width="900" height="400"></canvas>
+    <script>
+        const ctx = document.getElementById('barChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            // Different type of charts: https://www.chartjs.org/docs/latest/charts/bar.html.
+            type: 'bar',
+            data: {
+                labels: {{ labels | safe }},
+                // datasets: [{
+                //     label: "Data points",
+                //     data: {{ values | safe }},
+                //     backgroundColor: getRandomColor(),
+                //     borderColor: "rgb(255, 255, 255)",
+                //     borderWidth: 1
+                // }]
+                datasets: randomColorDatasets
+            },
+            options: {
+                // False to use canvas width and height.
+                responsive: false
+            }
+        });
+    </script>
+</body>
+</html>

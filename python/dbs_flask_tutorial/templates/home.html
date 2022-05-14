@@ -1,0 +1,46 @@
+<!-- !+Tab for html template. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!-- Chart.js script from https://cdnjs.com/libraries/Chart.js. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <h1>Login Authentication System in Flask.</h1>
+    <a href="{{ url_for('login') }}">Login Page</a><br>
+    <a href="{{ url_for('register') }}">Register Page</a><br>
+
+    <!-- Chart.js tutorial: https://www.youtube.com/watch?v=E2hytuQvLlE. -->
+    <canvas id="lineChart" width="900" height="400"></canvas>
+    <script>
+    const ctx = document.getElementById('lineChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        // Different type of charts: https://www.chartjs.org/docs/latest/charts/bar.html.
+        type: 'bar',
+        data: {
+            labels: {{ labels | safe }},
+            datasets: [
+                {
+                    label: "Data points",
+                    data: {{ values | safe }},
+                    fill: false,
+                    backgroundColor: "rgb(75, 192, 192, 0.2)",
+                    borderColor: "rgb(75, 192, 192)",
+                    // Line curve.
+                    lineTension: 0.1
+                }
+            ]
+        },
+        options: {
+            // False to use canvas width and height.
+            responsive: false
+        }
+    });
+    </script>
+</body>
+</html>

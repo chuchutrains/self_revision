@@ -1,0 +1,28 @@
+<!-- !+Tab for html template. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>Register Page</h1>
+    <!-- Render FlaskForm validationError: https://stackabuse.com/flask-form-validation-with-flask-wtf/ -->
+    <!-- Jinja syntax: https://jinja.palletsprojects.com/en/3.1.x/templates/. -->
+    {% for field, errors in form.errors.items() %}
+        <p class='errorMsg'>{{ '\n'.join(errors) }}</p>
+    {% endfor %}
+
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {{ form.username }}
+        {{ form.password }}
+        {{ form.submit }}
+    </form>
+
+    <a href="{{ url_for('login') }}">Already have an  account? Log In</a>
+</body>
+</html>
