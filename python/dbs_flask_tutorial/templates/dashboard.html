@@ -7,50 +7,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
 
-    <!-- Chart.js script from https://cdnjs.com/libraries/Chart.js. -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script type = "text/javascript">
-        // Random color datasets: https://stackoverflow.com/questions/47638561/random-color-loop-using-chartjs-and-loops.
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF'.split('');
-            var color = '#';
-            for (var i=0; i<6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            // 50% opacity: https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4.
-            return color+'80';
-        }
-        
-        var randomColorDatasets = [];
-        for(var i=0; i<'{{ array_size }}'; i++) {
-            randomColorDatasets[i] = {
-                label: "Data points",
-                data: '{{ values[0] | safe }}',
-                backgroundColor: getRandomColor(),
-                borderColor: "rgb(255, 255, 255)",
-                borderWidth: 1,
-            };
-        }
-    </script>
+    <!-- CSS. -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
-    <h1>Hello {{ username }}, you are logged in.</h1>
-    <a href="{{ url_for('logout') }}">Press here to logout</a><br>
+    {% include 'topNavigationBar.html' %}
 
-    <a href="{{ url_for('add_expense') }}">Add Expense</a>
-    
-    {% for expense in expenses %}
-        <p>
-            {{ expense.name }}
-            {{ expense.amount }}
-            {{ expense.updated_at }}
-            <a href="{{ url_for('edit_expense', id=expense.id) }}">Edit</a>
-            <a href="{{ url_for('delete_expense', id=expense.id) }}">Delete</a>
-        </p>
-    {% endfor %}
+    <div class="body-center">
+        <!-- <h1>Hello {{ username }}, you are logged in.</h1> -->
+        <h1>Expenses Dashboard</h1><hr>
+        <!-- <a href="{{ url_for('logout') }}">Press here to logout</a><br> -->
 
-    <!-- Chart.js tutorial: https://www.youtube.com/watch?v=E2hytuQvLlE. -->
-    <canvas id="barChart" width="900" height="400"></canvas>
+        <div id="dashboard-options">
+            View: <select id="selectView" onChange="updateView()">
+                <option value="tableView" selected="selected">Table</option>
+                <option value="barChartView">Bar Chart</option>
+                <option value="pieChartView">Pie Chart</option>
+            </select>
+
+            <a id="add-expense" href="{{ url_for('addExpense') }}">Add Expense</a>
+        </div>
+
+        <!-- Table view. -->
+        <div id="table">
+            <table>
+                <tr>
+                    <th>Expense Name</th>
+                    <th>Budget</th>
+                    <th>Updated At</th>
+                    <th>Edit Expense</th>
+                    <th>Delete Expense</th>
+                </tr>
+                {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.name }}</td>
+                        <td>${{ expense.amount }}</td>
+                        <td>{{ expense.updated_at }}</td>
+                        <td><a href="{{ url_for('editExpense', id=expense.id) }}">Edit</a></td>
+                        <td><a href="{{ url_for('deleteExpense', id=expense.id) }}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- Bar chart view. -->
+        <!-- Chart.js tutorial: https://www.youtube.com/watch?v=E2hytuQvLlE. -->
+        <canvas id="barChart" width="900" height="400"></canvas>
+        <!-- Pie chart view. -->
+        <canvas id="pieChart" width="900" height="400"></canvas>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <!-- Javascript. -->
+    <!-- Chart.js script from https://cdnjs.com/libraries/Chart.js. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{url_for('static', filename='javascript/global.js')}}"></script>
+    <script src="{{url_for('static', filename='javascript/dashboard.js')}}"></script>
     <script>
         const ctx = document.getElementById('barChart').getContext('2d');
         const myChart = new Chart(ctx, {
@@ -58,17 +71,53 @@
             type: 'bar',
             data: {
                 labels: {{ labels | safe }},
-                // datasets: [{
-                //     label: "Data points",
-                //     data: {{ values | safe }},
-                //     backgroundColor: getRandomColor(),
-                //     borderColor: "rgb(255, 255, 255)",
-                //     borderWidth: 1
-                // }]
-                datasets: randomColorDatasets
+                datasets: [{
+                    label: "Budgets ($)",
+                    data: {{ values | safe }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255, 205, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(201, 203, 207, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 205, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(54, 162, 235)',
+                        'rgb(153, 102, 255)',
+                        'rgb(201, 203, 207)'
+                    ],
+                    borderWidth: 1
+                }]
             },
             options: {
                 // False to use canvas width and height.
+                responsive: true
+            }
+        });
+
+        const pie_ctx = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(pie_ctx, {
+            type: 'doughnut',
+            data: {
+                labels: {{ labels | safe }},
+                datasets: [{
+                    label: "Budgets ($)",
+                    data: {{ values | safe }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(255, 205, 86, 0.4)'
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
                 responsive: false
             }
         });

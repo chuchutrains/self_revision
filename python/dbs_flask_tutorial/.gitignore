@@ -1,2 +1,5 @@
-# Cache
+# Cache.
 __pycache__/
+
+# Database.
+database.db
