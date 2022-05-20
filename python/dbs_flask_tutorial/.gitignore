@@ -1,5 +1,2 @@
 # Cache.
 __pycache__/
-
-# Database.
-.db
