@@ -6,9 +6,10 @@
     float: right;
 }
 
-table {
+#table {
     width: 100%;
     margin-bottom: 10px;
+    display: table;
 }
 
 td, th {
@@ -18,16 +19,19 @@ td, th {
 }
 
 th {
+    /* Use global variable declared at global.css. */
     background: var(--theme-color);
+}
+
+/* Select first 3 elements. */
+th:nth-child(-n+3) {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 /* CSS selectors: https://code.tutsplus.com/tutorials/the-30-css-selectors-you-must-memorize--net-16048. */
 tr:nth-child(odd) {
     background-color: #dddddd;
-}
-  
-#table {
-    display: block;
 }
 
 #barChart {

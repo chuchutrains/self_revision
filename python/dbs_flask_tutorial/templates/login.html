@@ -9,18 +9,24 @@
 
     <!-- CSS. -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register_login.css') }}">
 </head>
 <body>
     {% include 'topNavigationBar.html' %}
 
     <div class="body-center">
-        <h1>Login Page</h1>
+        <h1>Login</h1><hr>
 
+        {% with messages = get_flashed_messages() %}   
+            {% for message in messages %}  
+                <p class='errorMsg'>{{ message }}</p>  
+            {% endfor %}   
+        {% endwith %}  
         <form method="POST" action="">
             {{ form.hidden_tag() }}
-            {{ form.username }}
-            {{ form.password }}
+            <label>Username</label><br>
+            {{ form.username }}<br>
+            <label>Password</label><br>
+            {{ form.password }}<br>
             {{ form.submit }}
         </form>
 

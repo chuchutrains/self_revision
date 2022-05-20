@@ -15,27 +15,26 @@
     {% include 'topNavigationBar.html' %}
 
     <div class="body-center">
-        <!-- <h1>Hello {{ username }}, you are logged in.</h1> -->
         <h1>Expenses Dashboard</h1><hr>
-        <!-- <a href="{{ url_for('logout') }}">Press here to logout</a><br> -->
 
         <div id="dashboard-options">
             View: <select id="selectView" onChange="updateView()">
-                <option value="tableView" selected="selected">Table</option>
-                <option value="barChartView">Bar Chart</option>
-                <option value="pieChartView">Pie Chart</option>
+                <option value="table" selected="selected">Table</option>
+                <option value="barChart">Bar Chart</option>
+                <option value="pieChart">Pie Chart</option>
             </select>
 
             <a id="add-expense" href="{{ url_for('addExpense') }}">Add Expense</a>
         </div>
 
-        <!-- Table view. -->
-        <div id="table">
-            <table>
+        <!-- Expenses view. -->
+        <div id="expenses-view">
+            <!-- Table view. -->
+            <table id="table">
                 <tr>
-                    <th>Expense Name</th>
-                    <th>Budget</th>
-                    <th>Updated At</th>
+                    <th onclick="sortTable(0)">Expense Name</th>
+                    <th onclick="sortTable(1)">Budget</th>
+                    <th onclick="sortTable(2)">Updated At</th>
                     <th>Edit Expense</th>
                     <th>Delete Expense</th>
                 </tr>
@@ -49,12 +48,14 @@
                     </tr>
                 {% endfor %}
             </table>
+    
+            <!-- Bar chart view. -->
+            <!-- Chart.js tutorial: https://www.youtube.com/watch?v=E2hytuQvLlE. -->
+            <canvas id="barChart" width="900" height="400"></canvas>
+    
+            <!-- Pie chart view. -->
+            <canvas id="pieChart" width="900" height="400"></canvas>
         </div>
-        <!-- Bar chart view. -->
-        <!-- Chart.js tutorial: https://www.youtube.com/watch?v=E2hytuQvLlE. -->
-        <canvas id="barChart" width="900" height="400"></canvas>
-        <!-- Pie chart view. -->
-        <canvas id="pieChart" width="900" height="400"></canvas>
     </div>
 
     {% include 'footer.html' %}

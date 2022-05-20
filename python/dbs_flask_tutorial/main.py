@@ -1,10 +1,10 @@
-from flask import Flask, redirect, render_template, url_for, redirect
+from flask import Flask, redirect, render_template, url_for, redirect, flash
 from flask_login import UserMixin
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FloatField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 from datetime import datetime
@@ -38,6 +38,25 @@ class Expense(db.Model):
     updated_at = db.Column(db.String(32), nullable=False)
     username = db.Column(db.String(16), db.ForeignKey('user.id'), nullable=False)
 
+# HELPER FUNCTION ==============================================================
+def getCurrentUsername():
+    user_id = current_user.get_id()
+    user = User.query.filter_by(id=user_id).first()
+    return user.username
+
+def getDateTime():
+    # Date time format: https://docs.python.org/2/library/time.html#time.strptime.
+    now = datetime.now()
+    # Eg. 21 May 2022, 12:50 AM.
+    return now.strftime("%d %B %Y, %I:%M %p")
+
+def isFloat(num):
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False
+
 # FORM =========================================================================
 U_PWD_MIN_LEN = 4
 U_PWD_MAX_LEN = 16
@@ -57,7 +76,8 @@ class RegisterForm(FlaskForm):
     def validate_username(self, username):
         existing_user_username = User.query.filter_by(username=username.data).first()
         if existing_user_username:
-            raise ValidationError("That username already exists. Please choose a different one.")
+            # Display error message at .html using Jinja syntax.
+            raise ValidationError("Username already exists, please choose a different one.")
 
 class LoginForm(FlaskForm):
     username = StringField(
@@ -72,36 +92,40 @@ class AddExpenseForm(FlaskForm):
     name = StringField(
         validators=[InputRequired(), Length(min=NAME_MIN_LEN, max=NAME_MAX_LEN)],
         render_kw={"placeholder": "Expense name"})
-    amount = FloatField(
+    amount = StringField(
         validators=[InputRequired()],
         render_kw={"placeholder": "Amount"})
     submit = SubmitField("Add Expense")
+
+    def validate_amount(self, amount):
+        amount_str = amount.data 
+        if isFloat(amount_str) == False:
+            raise ValidationError("Please use only numbers in the Amount field.")
+        elif amount_str.find('.')+2 != len(amount_str)-1:
+            raise ValidationError("Please use only 2 decimal point in the Amount field.")
 
 class EditExpenseForm(FlaskForm):
     name = StringField(
         validators=[InputRequired(), Length(min=NAME_MIN_LEN, max=NAME_MAX_LEN)],
         render_kw={"placeholder": "Expense name"})
-    amount = FloatField(
+    amount = StringField(
         validators=[InputRequired()],
         render_kw={"placeholder": "Amount"})
     submit = SubmitField("Save Expense")
 
-# HELPER FUNCTION ==============================================================
-def getCurrentUsername():
-    user_id = current_user.get_id()
-    user = User.query.filter_by(id=user_id).first()
-    return user.username
-
-def getDateTime():
-    # Date time format: https://docs.python.org/2/library/time.html#time.strptime.
-    now = datetime.now()
-    return now.strftime("%d %B %Y, %I:%M %p")
+    def validate_amount(self, amount):
+        amount_str = amount.data 
+        if isFloat(amount_str) == False:
+            raise ValidationError("Please use only numbers in the Amount field.")
+        elif amount_str.find('.')+2 != len(amount_str)-1:
+            raise ValidationError("Please use only 2 decimal point in the Amount field.")
 
 # ROUTER =======================================================================
 @app.route('/')
 def home():
     return render_template('index.html')
 
+# Url end point.
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -116,6 +140,8 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -123,6 +149,10 @@ def login():
             if bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
                 return redirect(url_for('dashboard'))
+            else:
+                flash("Your Username or Password is incorrect")
+        else:
+            flash("Sorry, you have entered an invalid Username")
     return render_template('login.html', form=form)
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -137,7 +167,7 @@ def dashboard():
     expenses = Expense.query.filter_by(username=username)
     labels = [expense.name for expense in expenses]
     values = [expense.amount for expense in expenses]
-    return render_template('dashboard.html', username=username, expenses=expenses, labels=labels, values=values, array_size=len(labels))
+    return render_template('dashboard.html', expenses=expenses, labels=labels, values=values)
 
 @app.route('/addExpense', methods=['GET', 'POST'])
 def addExpense():

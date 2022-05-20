@@ -6,15 +6,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Expense</title>
+
+    <!-- CSS. -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
 </head>
 <body>
-    <h1>Edit Expense</h1>
+    {% include 'topNavigationBar.html' %}
 
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        {{ form.name(value=expense.name) }}
-        {{ form.amount(value=expense.amount) }}
-        {{ form.submit }}
-    </form>
+    <div class="body-center">
+        <h1>Edit Expense</h1><hr>
+
+        {% for field, errors in form.errors.items() %}
+            <p class='errorMsg'>{{ '\n'.join(errors) }}</p>
+        {% endfor %}
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <label>Expense Name</label><br>
+            {{ form.name(value=expense.name) }}<br>
+            <label>Amount</label><br>
+            {{ form.amount(value=expense.amount) }}<br>
+            {{ form.submit }}
+        </form>
+    </div>
+    
+    {% include 'footer.html' %}
 </body>
 </html>

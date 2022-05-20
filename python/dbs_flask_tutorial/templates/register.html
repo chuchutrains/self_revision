@@ -9,13 +9,12 @@
     
     <!-- CSS. -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/register_login.css') }}">
 </head>
 <body>
     {% include 'topNavigationBar.html' %}
 
     <div class="body-center">
-        <h1>Register Page</h1><hr>
+        <h1>Register</h1><hr>
         <!-- Render FlaskForm validationError: https://stackabuse.com/flask-form-validation-with-flask-wtf/ -->
         <!-- Jinja syntax: https://jinja.palletsprojects.com/en/3.1.x/templates/. -->
         {% for field, errors in form.errors.items() %}
