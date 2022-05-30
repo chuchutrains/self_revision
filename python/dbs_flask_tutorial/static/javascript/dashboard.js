@@ -1,3 +1,37 @@
+// Modal. ======================================================================
+
+// Get the modal
+var modal = document.getElementsByClassName("modal")[0];
+// When the user clicks the link, open the modal
+var selectedExpenseId = 0;
+function openModal(expenseId) {
+    selectedExpenseId = expenseId;
+    modal.style.display = "block";
+}
+
+// Get the button element that closes the modal
+var modalCancel = document.getElementsByClassName("modal-cancel")[0];
+// When the user clicks on <span> (x), close the modal
+modalCancel.onclick = function() {
+    modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// When the user clicks the delete button, delete expense from the database.
+var modalDelete = document.getElementsByClassName("modal-delete")[0];
+modalDelete.onclick = function() {
+    var baseUrl = window.location.origin;
+    var deleteExpenseUrl = baseUrl + '/deleteExpense/' + selectedExpenseId;
+    // Use location.replace to redirect without creating history, else use location.assign.
+    location.replace(deleteExpenseUrl);
+}
+
+// Table and chart views. ======================================================
 function updateView() {  
     var selectView = document.getElementById('selectView');
     var option = selectView.options[selectView.selectedIndex];
@@ -15,6 +49,8 @@ function updateView() {
     }
 }
 updateView();
+
+// Sort by table column. =======================================================
 
 // Convert string date back to time stamp. 
 function toTimeStamp(strDate) {

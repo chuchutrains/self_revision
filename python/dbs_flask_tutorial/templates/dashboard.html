@@ -44,7 +44,7 @@
                         <td>${{ expense.amount }}</td>
                         <td>{{ expense.updated_at }}</td>
                         <td><a href="{{ url_for('editExpense', id=expense.id) }}">Edit</a></td>
-                        <td><a href="{{ url_for('deleteExpense', id=expense.id) }}">Delete</a></td>
+                        <td><a class="delete-expense" onclick='openModal("{{ expense.id }}")'>Delete</a></td>
                     </tr>
                 {% endfor %}
             </table>
@@ -55,6 +55,15 @@
     
             <!-- Pie chart view. -->
             <canvas id="pieChart" width="900" height="400"></canvas>
+        </div>
+
+        <!-- Modal. -->
+        <div class="modal">
+            <div class="modal-content">
+                <p>Are you sure you want to delete?</p>
+                <button class="modal-cancel">Cancel</button>
+                <button class="modal-delete">Delete</button>
+            </div>
         </div>
     </div>
 
