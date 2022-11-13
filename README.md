@@ -13,7 +13,8 @@ Personal Google Docs notes, click [here](https://docs.google.com/document/d/1jHo
 2. `git checkout -b <source> <destination>`, eg branching out from master and name branch as feature/abc `git checkout -b master feature/abc`.
 
 ### Delete Branch
-...
+1. `git push -d <remote> <branch>`, eg `git push -d origin feature/abc`.
+2. @TODO: --prune.
 
 ### Git Push
 1. Add all the files changes to staging `git add .`, "." is to add all.
