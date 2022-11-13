@@ -1,3 +1,9 @@
+# Getting Started
+1. Update node version `npm install -g`.
+2. Create react application `npx create-react-app <application name>`.
+3. Install libraries and dependencies to your local (node_modules folder) `npm install`.
+4. Run react application `npm start`, url is http://localhost:3000.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
